@@ -59,10 +59,10 @@ resource "azurerm_kubernetes_cluster" "k8s_cluster" {
   kubernetes_version  = "1.26"
 
   default_node_pool {
-    name              = var.agent_pool
-    vm_size           = var.agent_pool
+    name              = var.agent_pool[0]
+    vm_size           = var.agent_pool[1]
     node_count        = 2
-    availability_zone = ["1", "2"]
+
   }
 
   service_principal {
@@ -70,32 +70,44 @@ resource "azurerm_kubernetes_cluster" "k8s_cluster" {
     client_secret = var.clientsecret
   }
 
-  network_profile {
-    network_plugin    = [element(var.network_profile, 0)]
-    load_balancer_sku = [element(var.network_profile, 2)]
-    network_policy    = [element(var.network_profile, 0)]
-  }
 
-  role_based_access_control {
-    enabled = true
-  }
 
-  addon_profile {
-    oms_agent {
-      enabled                    = true
-      log_analytics_workspace_id = azurerm_log_analytics_workspace.azure_workspace.name
-    }
-    kube_dashboard {
-      enabled = true
-    }
-    lifecycle {
+
+  lifecycle {
       ignore_changes = [
         windows_profile, default_node_pool
       ]
     }
-  }
+
 
 }
 
 
-tags = var.tags
+resource "azurerm_network_profile" "network8s" {
+  name                = "${local.common_name}-network8s"
+  location            = var.location
+  resource_group_name = azurerm_resource_group.azure_k8s.name
+
+  container_network_interface {
+    name = "${local.common_name}-nic"
+
+    ip_configuration {
+      name      = "${local.common_name}-ipconfig"
+      subnet_id = azurerm_subnet.subnet.id
+    }
+  }
+}
+resource "helm_release" "my-kubernetes-dashboard" {
+
+  name = "${local.common_name}-kubernetes_dashboard"
+
+  repository = "https://kubernetes.github.io/dashboard/"
+  chart      = "kubernetes-dashboard"
+  namespace  = "kube-dashboard"
+
+
+  set {
+    name  = "metricsScraper.enabled"
+    value = "true"
+  }
+}

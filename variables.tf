@@ -1,7 +1,7 @@
 variable "location" {
   type        = string
   description = "location of the RG"
-  default     = "east-us"
+  default     = "eastus"
 }
 
 variable "address_space" {
@@ -19,10 +19,10 @@ variable "agent_pool" {
 }
 
 variable "clientid" {
-  default = ""
+  default = "7e6b1379-e664-45d7-be0d-120ce3eab0df"
 }
 variable "clientsecret" {
-  default = ""
+  default = "JSm8Q~iCFwlAGazpfquZAeuuWfz4obY.RoYmYcMq"
 }
 
 variable "tags" {
