@@ -98,17 +98,17 @@ resource "azurerm_network_profile" "network8s" {
     }
   }
 }
-resource "helm_release" "my-kubernetes-dashboard" {
-
-  name = "${local.common_name}-kubernetes_dashboard"
-
-  repository = "https://kubernetes.github.io/dashboard/"
-  chart      = "kubernetes-dashboard"
-  namespace  = "kube-dashboard"
-
-
-  set {
-    name  = "metricsScraper.enabled"
-    value = "true"
-  }
-}
+#resource "helm_release" "my-kubernetes-dashboard" {
+#
+#  name = "${local.common_name}-kubernetes_dashboard"
+#
+#  repository = "https://kubernetes.github.io/dashboard/"
+#  chart      = "kubernetes-dashboard"
+#  namespace  = "kube-dashboard"
+#
+#
+#  set {
+#    name  = "metricsScraper.enabled"
+#    value = "true"
+#  }
+#}
