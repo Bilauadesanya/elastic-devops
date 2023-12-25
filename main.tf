@@ -36,7 +36,7 @@ resource "azurerm_virtual_network" "vnet" {
   resource_group_name = azurerm_resource_group.azure_k8s.name
 }
 resource "azurerm_subnet" "subnet" {
-  address_prefixes     = [element(var.address_space, 1)]
+  address_prefixes     = [element(var.address_space,1)]
   name                 = "${local.common_name}-subnet"
   resource_group_name  = azurerm_resource_group.azure_k8s.name
   virtual_network_name = azurerm_virtual_network.vnet.name
@@ -47,7 +47,7 @@ resource "azurerm_public_ip" "public_ip" {
   location            = var.location
   name                = "${local.common_name}-public_ip"
   resource_group_name = azurerm_resource_group.azure_k8s.name
-  sku = [element(var.publicip_sku, 1)]
+  sku = var.publicip_sku[1]
 }
 
 
