@@ -36,3 +36,6 @@ variable "tags" {
 variable "network_profile" {
   default = ["azure", "kubenet", "standard"]
 }
+variable "publicip_sku" {
+  default = ["Basic","Standard"]
+}
